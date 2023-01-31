@@ -1,0 +1,110 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Cars {
+  id             String                @id(map: "PK_fc218aa84e79b477d55322271b6") @default(uuid())
+  name           String
+  description    String
+  daily_rate     Float
+  available      Boolean               @default(true)
+  license_plate  String                @unique
+  fine_amount    Float
+  brand          String
+  category_id    String?
+  created_at     DateTime              @default(now())
+  category       Categories?           @relation(fields: [category_id], references: [id], onUpdate: SetNull, map: "FKCategoryCar")
+  cars_images    Cars_Images[]
+  rentals        Rentals[]
+  specifications Specifications_Cars[]
+
+  @@map("cars")
+}
+
+model Cars_Images {
+  id         String   @id(map: "PK_6180002831bf7873c4c37d7a5a7") @default(uuid())
+  car_id     String
+  image_name String
+  created_at DateTime @default(now())
+  car        Cars     @relation(fields: [car_id], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKCarImage")
+
+  @@map("cars_images")
+}
+
+model Categories {
+  id          String   @id(map: "PK_24dbc6126a28ff948da33e97d3b") @default(uuid())
+  name        String   @unique
+  description String
+  created_at  DateTime @default(now())
+  cars        Cars[]
+
+  @@map("categories")
+}
+
+model Rentals {
+  id                   String    @id(map: "PK_2b10d04c95a8bfe85b506ba52ba") @default(uuid())
+  car_id               String
+  user_id              String
+  start_date           DateTime  @default(now())
+  end_date             DateTime?
+  expected_return_date DateTime
+  total                Float?
+  created_at           DateTime  @default(now())
+  updated_at           DateTime  @default(now())
+  car                  Cars      @relation(fields: [car_id], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKCarRental")
+  user                 Users     @relation(fields: [user_id], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKUserRental")
+
+  @@map("rentals")
+}
+
+model Specifications {
+  id          String                @id(map: "PK_621aabf71e640ab86f0e8b62a37") @default(uuid())
+  name        String                @unique
+  description String
+  created_at  DateTime              @default(now())
+  cars        Specifications_Cars[]
+
+  @@map("specifications")
+}
+
+model Specifications_Cars {
+  id               String         @id @default(uuid())
+  car_id           String
+  specification_id String
+  created_at       DateTime       @default(now())
+  car              Cars           @relation(fields: [car_id], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKCarsSpecification")
+  specification    Specifications @relation(fields: [specification_id], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKSpecificationsCars")
+
+  @@map("specifications_cars")
+}
+
+model Users {
+  id             String         @id(map: "PK_a3ffb1c0c8416b9fc6f907b7433") @default(uuid())
+  name           String         @unique(map: "UQ_51b8b26ac168fbe7d6f5653e6cf")
+  email          String         @unique
+  password       String
+  driver_license String         @unique
+  isAdmin        Boolean        @default(false)
+  created_at     DateTime       @default(now())
+  avatar         String?
+  rentals        Rentals[]
+  tokens         Users_Tokens[]
+
+  @@map("users")
+}
+
+model Users_Tokens {
+  id              String   @id(map: "PK_9f236389174a6ccbd746f53dca8") @default(uuid())
+  refresh_token   String
+  user_id         String
+  expiration_date DateTime
+  created_at      DateTime @default(now())
+  user            Users    @relation(fields: [user_id], references: [id], onDelete: Cascade, map: "FKUserToken")
+
+  @@map("users_tokens")
+}

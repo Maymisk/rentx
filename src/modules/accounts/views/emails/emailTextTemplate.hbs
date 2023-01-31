@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .container {
+        width: 800px;
+        
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center; 
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    div {
+        margin: 0.5rem
+    }
+    
+    span {
+        margin-top: 4rem;
+    }
+
+</style>
+
+</head>
+
+<body>
+    <div class="container">
+    <img src="https://i.imgur.com/oUAKMC5.png" alt="Rentx logo">
+    <span>Oi, {{name}}</span>
+
+    <br>
+
+    <div>Você solicitou a alteração de senha.</div> 
+    <div>Para realizar a troca, clique no link abaixo:</div>
+    <div><a href={{link}}>{{link}}</a></div>
+
+    <span>Caso não tenha requisitado a alteração, basta ignorar este e-mail.</span>
+
+    <strong>Obrigado!</strong>
+
+    <h3>Equipe | <strong>Rentx</strong></h3>
+</div>
+</body>
+</html>
