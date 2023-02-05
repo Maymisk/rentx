@@ -1,34 +1,26 @@
-import 'reflect-metadata';
-
+import { resolveImageURL } from '../../../utils/resolveImageURL';
+import { User } from '../infra/typeorm/entities/User';
 import { IUserResponse } from './IUserResponse';
 
-import { classToClassFromExist } from 'class-transformer';
-import { User } from '../infra/typeorm/entities/User';
-import { Users } from '@prisma/client';
-
 class UserMapper {
-    static toDTO({
-        email,
-        name,
-        id,
-        avatar,
-        driver_license,
-        avatar_url
-    }: IUserResponse): IUserResponse {
-        const user = classToClassFromExist(
-            {
-                email,
-                name,
-                id,
-                avatar,
-                driver_license,
-                avatar_url
-            },
-            {}
-        );
+	static toDTO({
+		email,
+		name,
+		id,
+		avatar,
+		driver_license,
+	}: User): IUserResponse {
+		const user = {
+			email,
+			name,
+			id,
+			avatar,
+			driver_license,
+			avatar_url: avatar ? resolveImageURL(avatar, 'avatar') : null,
+		};
 
-        return user as Users | User;
-    }
+		return user;
+	}
 }
 
 export { UserMapper };

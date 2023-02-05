@@ -7,44 +7,44 @@ import { IUserTokensRepository } from '../../repositories/IUserTokensRepository'
 import { hash } from 'bcryptjs';
 
 interface IRequest {
-    token: string;
-    password: string;
+	token: string;
+	password: string;
 }
 
 @injectable()
 class ResetUserPasswordUseCase {
-    constructor(
-        @inject('PrismaUsersRepository')
-        private usersRepository: IUsersRepository,
-        @inject('PrismaUserTokensRepository')
-        private userTokensRepository: IUserTokensRepository,
-        @inject('DayJsDateProvider')
-        private dateProvider: IDateProvider
-    ) {}
+	constructor(
+		@inject('PrismaUsersRepository')
+		private usersRepository: IUsersRepository,
+		@inject('PrismaUserTokensRepository')
+		private userTokensRepository: IUserTokensRepository,
+		@inject('DayJsDateProvider')
+		private dateProvider: IDateProvider
+	) {}
 
-    async execute({ token, password }: IRequest) {
-        const userToken = await this.userTokensRepository.findByRefreshToken(
-            token
-        );
+	async execute({ token, password }: IRequest) {
+		const userToken = await this.userTokensRepository.findByRefreshToken(
+			token
+		);
 
-        if (!userToken) {
-            throw new AppError('Invalid token!');
-        }
+		if (!userToken) {
+			throw new AppError('Invalid token!');
+		}
 
-        const now = this.dateProvider.dateNow();
+		const now = this.dateProvider.dateNow();
 
-        if (this.dateProvider.checkIfBefore(userToken.expiration_date, now)) {
-            throw new AppError('Your link has expired');
-        }
+		if (this.dateProvider.checkIfBefore(userToken.expiration_date, now)) {
+			throw new AppError('Your link has expired');
+		}
 
-        const user = await this.usersRepository.findById(userToken.user_id);
+		const user = await this.usersRepository.findById(userToken.user_id);
 
-        user.password = await hash(password, 8);
+		const newPassword = await hash(password, 8);
 
-        await this.usersRepository.create(user);
+		await this.usersRepository.updatePassword(user.id, newPassword);
 
-        await this.userTokensRepository.deleteById(userToken.id);
-    }
+		await this.userTokensRepository.deleteById(userToken.id);
+	}
 }
 
 export { ResetUserPasswordUseCase };

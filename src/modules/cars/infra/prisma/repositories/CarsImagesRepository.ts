@@ -5,25 +5,22 @@ import { Prisma } from '@prisma/client';
 import client from '@prismaClient/index';
 
 class CarsImagesRepository implements ICarsImagesRepository {
-    private carsImages: Prisma.Cars_ImagesDelegate<false>;
+	private carsImages: Prisma.Cars_ImagesDelegate<false>;
 
-    constructor() {
-        this.carsImages = client.cars_Images;
-    }
+	constructor() {
+		this.carsImages = client.cars_Images;
+	}
 
-    async create(
-        car_id: string,
-        image_name: string
-    ): Promise<CarImage | Cars_Images> {
-        const car_image = await this.carsImages.create({
-            data: {
-                car_id,
-                image_name
-            }
-        });
+	async create(car_id: string, image_name: string): Promise<CarImage> {
+		const car_image = await this.carsImages.create({
+			data: {
+				car_id,
+				image_name,
+			},
+		});
 
-        return car_image;
-    }
+		return car_image;
+	}
 }
 
 export { CarsImagesRepository };

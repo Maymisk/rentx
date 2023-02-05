@@ -9,17 +9,21 @@ import { UserProfileController } from '../../../../modules/accounts/useCases/use
 
 const usersRoutes = Router();
 
-const uploadAvatar = multer(uploadConfig);
+const { storage, tmpFolder } = uploadConfig;
+const uploadAvatar = multer({
+	dest: tmpFolder + '/avatar',
+	storage,
+});
 
 const createUserController = new CreateUserController();
 usersRoutes.post('/', createUserController.handle);
 
 const updateUserAvatarController = new UpdateUserAvatarController();
 usersRoutes.patch(
-    '/avatar',
-    ensureAuthenticated,
-    uploadAvatar.single('avatar'),
-    updateUserAvatarController.handle
+	'/avatar',
+	ensureAuthenticated,
+	uploadAvatar.single('avatar'),
+	updateUserAvatarController.handle
 );
 
 const userProfileController = new UserProfileController();

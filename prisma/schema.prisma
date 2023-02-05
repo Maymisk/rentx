@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.1.x"]
 }
 
 datasource db {
@@ -28,10 +29,10 @@ model Cars {
 
 model Cars_Images {
   id         String   @id(map: "PK_6180002831bf7873c4c37d7a5a7") @default(uuid())
-  car_id     String
+  car_id     String?
   image_name String
   created_at DateTime @default(now())
-  car        Cars     @relation(fields: [car_id], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKCarImage")
+  car        Cars?    @relation(fields: [car_id], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKCarImage")
 
   @@map("cars_images")
 }
@@ -48,16 +49,16 @@ model Categories {
 
 model Rentals {
   id                   String    @id(map: "PK_2b10d04c95a8bfe85b506ba52ba") @default(uuid())
-  car_id               String
-  user_id              String
+  car_id               String?
+  user_id              String?
   start_date           DateTime  @default(now())
   end_date             DateTime?
   expected_return_date DateTime
   total                Float?
   created_at           DateTime  @default(now())
   updated_at           DateTime  @default(now())
-  car                  Cars      @relation(fields: [car_id], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKCarRental")
-  user                 Users     @relation(fields: [user_id], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKUserRental")
+  car                  Cars?     @relation(fields: [car_id], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKCarRental")
+  user                 Users?    @relation(fields: [user_id], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKUserRental")
 
   @@map("rentals")
 }
@@ -73,12 +74,12 @@ model Specifications {
 }
 
 model Specifications_Cars {
-  id               String         @id @default(uuid())
-  car_id           String
-  specification_id String
-  created_at       DateTime       @default(now())
-  car              Cars           @relation(fields: [car_id], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKCarsSpecification")
-  specification    Specifications @relation(fields: [specification_id], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKSpecificationsCars")
+  id               String          @id @default(uuid())
+  car_id           String?
+  specification_id String?
+  created_at       DateTime        @default(now())
+  car              Cars?           @relation(fields: [car_id], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKCarsSpecification")
+  specification    Specifications? @relation(fields: [specification_id], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKSpecificationsCars")
 
   @@map("specifications_cars")
 }

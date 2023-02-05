@@ -11,6 +11,7 @@ const dataSource = new DataSource({
 	entities: ['./src/modules/**/infra/typeorm/entities/*.ts'],
 });
 
-dataSource.initialize();
+// we'll be using prisma 😬
+// dataSource.initialize();
 
 export default dataSource;

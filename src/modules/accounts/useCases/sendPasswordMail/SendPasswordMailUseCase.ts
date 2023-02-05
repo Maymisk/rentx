@@ -10,55 +10,55 @@ import { resolve } from 'path';
 
 @injectable()
 class SendPasswordMailUseCase {
-    constructor(
-        @inject('PrismaUsersRepository')
-        private usersRepository: IUsersRepository,
-        @inject('PrismaUserTokensRepository')
-        private userTokensRepository: IUserTokensRepository,
-        @inject('DayJsDateProvider')
-        private dateProvider: IDateProvider,
-        @inject('EtherealMailProvider')
-        private mailProvider: IMailProvider
-    ) {}
+	constructor(
+		@inject('PrismaUsersRepository')
+		private usersRepository: IUsersRepository,
+		@inject('PrismaUserTokensRepository')
+		private userTokensRepository: IUserTokensRepository,
+		@inject('DayJsDateProvider')
+		private dateProvider: IDateProvider,
+		@inject('MailProvider')
+		private mailProvider: IMailProvider
+	) {}
 
-    async execute(email: string) {
-        const user = await this.usersRepository.findByEmail(email);
+	async execute(email: string) {
+		const user = await this.usersRepository.findByEmail(email);
 
-        if (!user) {
-            throw new AppError("This user doesn't exist!");
-        }
+		if (!user) {
+			throw new AppError("This user doesn't exist!");
+		}
 
-        const token = uuidV4();
+		const token = uuidV4();
 
-        const expiration_date = this.dateProvider.addHours(3);
+		const expiration_date = this.dateProvider.addHours(3);
 
-        await this.userTokensRepository.create({
-            user_id: user.id,
-            refresh_token: token,
-            expiration_date
-        });
+		await this.userTokensRepository.create({
+			user_id: user.id,
+			refresh_token: token,
+			expiration_date,
+		});
 
-        const templatePath = resolve(
-            __dirname,
-            '..',
-            '..',
-            'views',
-            'emails',
-            'emailTextTemplate.hbs'
-        );
+		const templatePath = resolve(
+			__dirname,
+			'..',
+			'..',
+			'views',
+			'emails',
+			'emailTextTemplate.hbs'
+		);
 
-        const variables = {
-            name: user.name,
-            link: `${process.env.FORGOT_PASSWORD_URL}${token}`
-        };
+		const variables = {
+			name: user.name,
+			link: `${process.env.FORGOT_PASSWORD_URL}${token}`,
+		};
 
-        await this.mailProvider.sendMail(
-            email,
-            'Password redefinition',
-            variables,
-            templatePath
-        );
-    }
+		await this.mailProvider.sendMail(
+			email,
+			'Password redefinition',
+			variables,
+			templatePath
+		);
+	}
 }
 
 export { SendPasswordMailUseCase };

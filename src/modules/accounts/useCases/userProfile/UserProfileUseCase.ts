@@ -7,15 +7,15 @@ import { IUsersRepository } from '../../repositories/IUsersRespository';
 
 @injectable()
 class UserProfileUseCase {
-    constructor(
-        @inject('TypeormUsersRepository')
-        private usersRepository: IUsersRepository
-    ) {}
+	constructor(
+		@inject('PrismaUsersRepository')
+		private usersRepository: IUsersRepository
+	) {}
 
-    async execute(user_id: string): Promise<IUserResponse> {
-        const user = await this.usersRepository.findById(user_id);
-        return UserMapper.toDTO(user);
-    }
+	async execute(user_id: string): Promise<IUserResponse> {
+		const user = await this.usersRepository.findById(user_id);
+		return UserMapper.toDTO(user);
+	}
 }
 
 export { UserProfileUseCase };

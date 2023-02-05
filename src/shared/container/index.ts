@@ -25,76 +25,78 @@ import { ICarsImagesRepository } from '../../modules/cars/repositories/ICarsImag
 import { IRentsRepository } from '../../modules/rents/repositories/IRentsRepository';
 import { IUserTokensRepository } from '../../modules/accounts/repositories/IUserTokensRepository';
 
+import '../container/provider/MailProvider';
+
 // typeorm
 
 container.registerSingleton<ICategoriesRepository>(
-    'TypeormCategoriesRepository',
-    TypeormCategoriesRepository
+	'TypeormCategoriesRepository',
+	TypeormCategoriesRepository
 );
 
 container.registerSingleton<ISpecificationRespository>(
-    'TypeormSpecificationsRepository',
-    TypeormSpecificationsRepository
+	'TypeormSpecificationsRepository',
+	TypeormSpecificationsRepository
 );
 
 container.registerSingleton<IUsersRepository>(
-    'TypeormUsersRepository',
-    TypeormUsersRepository
+	'TypeormUsersRepository',
+	TypeormUsersRepository
 );
 
 container.registerSingleton<ICarsRepository>(
-    'TypeormCarsRepository',
-    TypeormCarsRepository
+	'TypeormCarsRepository',
+	TypeormCarsRepository
 );
 
 container.registerSingleton<ICarsImagesRepository>(
-    'TypeormCarsImagesRepository',
-    TypeormCarsImagesRepository
+	'TypeormCarsImagesRepository',
+	TypeormCarsImagesRepository
 );
 
 container.registerSingleton<IRentsRepository>(
-    'TypeormRentsRepository',
-    TypeormRentsRepository
+	'TypeormRentsRepository',
+	TypeormRentsRepository
 );
 
 container.registerSingleton<IUserTokensRepository>(
-    'TypeormUserTokensRepository',
-    TypeormUserTokensRepository
+	'TypeormUserTokensRepository',
+	TypeormUserTokensRepository
 );
 
 // prisma
 
 container.registerSingleton<ICategoriesRepository>(
-    'PrismaCategoriesRepository',
-    PrismaCategoriesRepository
+	'PrismaCategoriesRepository',
+	PrismaCategoriesRepository
 );
 
 container.registerSingleton<ISpecificationRespository>(
-    'PrismaSpecificationsRepository',
-    PrismaSpecificationsRepository
+	'PrismaSpecificationsRepository',
+	PrismaSpecificationsRepository
 );
 
 container.registerSingleton<IUsersRepository>(
-    'PrismaUsersRepository',
-    PrismaUsersRepository
+	'PrismaUsersRepository',
+	PrismaUsersRepository
 );
 
 container.registerSingleton<ICarsRepository>(
-    'PrismaCarsRepository',
-    PrismaCarsRepository
+	'PrismaCarsRepository',
+	PrismaCarsRepository
 );
 
 container.registerSingleton<ICarsImagesRepository>(
-    'PrismaCarsImagesRepository',
-    PrismaCarsImagesRepository
+	'PrismaCarsImagesRepository',
+	PrismaCarsImagesRepository
 );
 
 container.registerSingleton<IRentsRepository>(
-    'PrismaRentsRepository',
-    PrismaRentsRepository
+	'PrismaRentsRepository',
+	PrismaRentsRepository
 );
 
 container.registerSingleton<IUserTokensRepository>(
-    'PrismaUserTokensRepository',
-    PrismaUserTokensRepository
+	'PrismaUserTokensRepository',
+	PrismaUserTokensRepository
 );

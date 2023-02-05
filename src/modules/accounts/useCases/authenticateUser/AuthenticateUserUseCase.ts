@@ -9,74 +9,74 @@ import auth from '../../../../config/auth';
 import { IDateProvider } from '../../../../shared/container/provider/DateProvider/IDateProvider';
 
 interface IRequest {
-    email: string;
-    password: string;
+	email: string;
+	password: string;
 }
 
 interface IResponse {
-    user: {
-        name: string;
-        email: string;
-    };
-    token: string;
-    refresh_token: string;
+	user: {
+		name: string;
+		email: string;
+	};
+	token: string;
+	refresh_token: string;
 }
 
 @injectable()
 class AuthenticateUserUseCase {
-    constructor(
-        @inject('PrismaUsersRepository')
-        private usersRepository: IUsersRepository,
-        @inject('PrismaUserTokensRepository')
-        private userTokensRepository: IUserTokensRepository,
-        @inject('DayJsDateProvider')
-        private dateProvider: IDateProvider
-    ) {}
+	constructor(
+		@inject('PrismaUsersRepository')
+		private usersRepository: IUsersRepository,
+		@inject('PrismaUserTokensRepository')
+		private userTokensRepository: IUserTokensRepository,
+		@inject('DayJsDateProvider')
+		private dateProvider: IDateProvider
+	) {}
 
-    async execute({ email, password }: IRequest): Promise<IResponse> {
-        const user = await this.usersRepository.findByEmail(email);
+	async execute({ email, password }: IRequest): Promise<IResponse> {
+		const user = await this.usersRepository.findByEmail(email);
 
-        if (!user) {
-            throw new AppError('Email or password incorrect!');
-        }
+		if (!user) {
+			throw new AppError('Email or password incorrect!');
+		}
 
-        const passwordMatch = await compare(password, user.password);
+		const passwordMatch = await compare(password, user.password);
 
-        if (!passwordMatch) {
-            throw new AppError('Email or password incorrect!');
-        }
+		if (!passwordMatch) {
+			throw new AppError('Email or password incorrect!');
+		}
 
-        const token = sign({}, auth.jwt_secret, {
-            subject: user.id,
-            expiresIn: auth.jwt_expiresIn
-        });
+		const token = sign({}, auth.jwt_secret, {
+			subject: user.id,
+			expiresIn: auth.jwt_expiresIn,
+		});
 
-        const refresh_token = sign({ email }, auth.refreshJWT_secret, {
-            subject: user.id,
-            expiresIn: auth.refreshJWT_expiresIn
-        });
+		const refresh_token = sign({ email }, auth.refreshJWT_secret, {
+			subject: user.id,
+			expiresIn: auth.refreshJWT_expiresIn,
+		});
 
-        const refreshTokenExpiryDate = this.dateProvider.addDays(
-            auth.refreshJWT_expiresDays
-        );
+		const refreshTokenExpiryDate = this.dateProvider.addDays(
+			auth.refreshJWT_expiresDays
+		);
 
-        await this.userTokensRepository.create({
-            user_id: user.id,
-            refresh_token,
-            expiration_date: refreshTokenExpiryDate
-        });
+		await this.userTokensRepository.create({
+			user_id: user.id,
+			refresh_token,
+			expiration_date: refreshTokenExpiryDate,
+		});
 
-        const returnObject: IResponse = {
-            user: {
-                name: user.name,
-                email: user.email
-            },
-            token,
-            refresh_token
-        };
+		const returnObject: IResponse = {
+			user: {
+				name: user.name,
+				email: user.email,
+			},
+			token,
+			refresh_token,
+		};
 
-        return returnObject;
-    }
+		return returnObject;
+	}
 }
 
 export { AuthenticateUserUseCase };

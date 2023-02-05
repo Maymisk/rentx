@@ -1,81 +1,104 @@
 import dataSource from '@dataSource/index';
+import { Cars } from '@prisma/client';
 import { Repository } from 'typeorm';
 import { ICarsRepository } from '../../../repositories/ICarsRepository';
 import { ICreateCarDTO } from '../../../useCases/createCar/CreateCarDTO';
 import { Car } from '../entities/Car';
+import { Specification } from '../entities/Specification';
 
 class CarsRepository implements ICarsRepository {
-    private cars: Repository<Car>;
+	private cars: Repository<Car>;
 
-    constructor() {
-        this.cars = dataSource.getRepository(Car);
-    }
+	constructor() {
+		this.cars = dataSource.getRepository(Car);
+	}
 
-    async create(data: ICreateCarDTO): Promise<Car> {
-        const car = this.cars.create(data);
+	async create(data: ICreateCarDTO): Promise<Car> {
+		const car = this.cars.create(data);
 
-        await this.cars.save(car);
+		await this.cars.save(car);
 
-        return car;
-    }
+		return car;
+	}
 
-    async findByLicensePlate(license_plate: string): Promise<Car> {
-        const car = await this.cars.findOne({
-            where: {
-                license_plate: license_plate
-            }
-        });
+	async findByLicensePlate(license_plate: string): Promise<Car> {
+		const car = await this.cars.findOne({
+			where: {
+				license_plate: license_plate,
+			},
+		});
 
-        return car;
-    }
+		return car;
+	}
 
-    async findAvailable(
-        name: string,
-        brand: string,
-        category_id: string
-    ): Promise<Car[]> {
-        const carsQuery = this.cars
-            .createQueryBuilder('c')
-            .where('c.available = :available', { available: true });
+	async findAvailable(
+		name: string,
+		brand: string,
+		category_id: string
+	): Promise<Car[]> {
+		const carsQuery = this.cars
+			.createQueryBuilder('c')
+			.where('c.available = :available', { available: true });
 
-        if (name) {
-            carsQuery.andWhere('c.name = :carName', { carName: name });
-        }
+		if (name) {
+			carsQuery.andWhere('c.name = :carName', { carName: name });
+		}
 
-        if (brand) {
-            carsQuery.andWhere('c.brand = :carBrand', { carBrand: brand });
-        }
+		if (brand) {
+			carsQuery.andWhere('c.brand = :carBrand', { carBrand: brand });
+		}
 
-        if (category_id) {
-            carsQuery.andWhere('c.category_id = :carCategory', {
-                carCategory: category_id
-            });
-        }
+		if (category_id) {
+			carsQuery.andWhere('c.category_id = :carCategory', {
+				carCategory: category_id,
+			});
+		}
 
-        return await carsQuery.getMany();
-    }
+		return await carsQuery.getMany();
+	}
 
-    async findById(car_id: string): Promise<Car> {
-        const car = await this.cars.findOne({
-            where: {
-                id: car_id
-            }
-        });
+	async findById(car_id: string): Promise<Car> {
+		const car = await this.cars.findOne({
+			where: {
+				id: car_id,
+			},
+		});
 
-        return car;
-    }
+		return car;
+	}
 
-    async updateAvailable(car_id: string, state: boolean): Promise<void> {
-        const car = await this.cars.findOne({
-            where: {
-                id: car_id
-            }
-        });
+	async updateAvailable(car_id: string, state: boolean): Promise<void> {
+		const car = await this.cars.findOne({
+			where: {
+				id: car_id,
+			},
+		});
 
-        car.available = state;
+		car.available = state;
 
-        await this.cars.save(car);
-    }
+		await this.cars.save(car);
+	}
+
+	async updateSpecifications(
+		car_id: string,
+		specifications: Specification[]
+	): Promise<Cars | Car> {
+		const data = specifications.map(id => {
+			return { specifications_id: id };
+		});
+
+		const car = await this.cars.findOne({
+			where: {
+				id: car_id,
+			},
+		});
+
+		car.specifications = specifications;
+
+		const newCar = await this.cars.save(car);
+
+		return car;
+	}
 }
 
 export { CarsRepository };
