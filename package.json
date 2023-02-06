@@ -32,7 +32,7 @@
 		"docker:app": "docker-compose up",
 		"docker:test-db": "docker-compose -f docker-compose.test.yml up",
 		"prisma:migrate-test": "dotenv -e .env.test -- yarn prisma db push",
-		"prisma:studio": "dotenv -e .env.development -- yarn prisma studio",
+		"prisma:dev": "dotenv -e .env.development -- yarn prisma",
 		"typeorm": "ts-node-dev ./node_modules/typeorm/cli.js"
 	},
 	"devDependencies": {

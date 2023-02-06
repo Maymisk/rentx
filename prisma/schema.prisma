@@ -21,7 +21,7 @@ model Cars {
   created_at     DateTime              @default(now())
   category       Categories?           @relation(fields: [category_id], references: [id], onUpdate: SetNull, map: "FKCategoryCar")
   cars_images    Cars_Images[]
-  rentals        Rentals[]
+  rents          Rents[]
   specifications Specifications_Cars[]
 
   @@map("cars")
@@ -47,7 +47,7 @@ model Categories {
   @@map("categories")
 }
 
-model Rentals {
+model Rents {
   id                   String    @id(map: "PK_2b10d04c95a8bfe85b506ba52ba") @default(uuid())
   car_id               String?
   user_id              String?
@@ -60,7 +60,7 @@ model Rentals {
   car                  Cars?     @relation(fields: [car_id], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKCarRental")
   user                 Users?    @relation(fields: [user_id], references: [id], onDelete: SetNull, onUpdate: SetNull, map: "FKUserRental")
 
-  @@map("rentals")
+  @@map("Rents")
 }
 
 model Specifications {
@@ -93,7 +93,7 @@ model Users {
   isAdmin        Boolean        @default(false)
   created_at     DateTime       @default(now())
   avatar         String?
-  rentals        Rentals[]
+  rents          Rents[]
   tokens         Users_Tokens[]
 
   @@map("users")
