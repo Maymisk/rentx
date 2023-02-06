@@ -25,8 +25,6 @@ import { ICarsImagesRepository } from '../../modules/cars/repositories/ICarsImag
 import { IRentsRepository } from '../../modules/rents/repositories/IRentsRepository';
 import { IUserTokensRepository } from '../../modules/accounts/repositories/IUserTokensRepository';
 
-import '../container/provider/MailProvider';
-
 // typeorm
 
 container.registerSingleton<ICategoriesRepository>(

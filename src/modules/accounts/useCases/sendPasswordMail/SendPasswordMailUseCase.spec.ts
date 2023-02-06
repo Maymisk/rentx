@@ -50,7 +50,7 @@ describe('Send password mail use case', () => {
 		).rejects.toEqual(new AppError("This user doesn't exist!"));
 	});
 
-	it('Should create a new link access token to the user upon sending the email', async () => {
+	it('Should create a link with a token to the user upon sending the email', async () => {
 		const createToken = jest.spyOn(userTokensRepository, 'create');
 
 		await usersRepositoryInMemory.create({
