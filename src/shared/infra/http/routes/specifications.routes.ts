@@ -1,11 +1,26 @@
-import {Router} from 'express'
-import { CreateSpecificationsController } from '../../../../modules/cars/useCases/createSpecification/CreateSpecificationsController'
-import { ensureAdmin } from '../middlewares/ensureAdmin'
-import { ensureAuthenticated } from '../middlewares/ensureAuthenticated'
+import { Router } from 'express';
+import { UpdateCarSpecificationsController } from 'modules/cars/useCases/updateCarSpecifications/UpdateCarSpecificationsController';
+import { CreateSpecificationsController } from '../../../../modules/cars/useCases/createSpecification/CreateSpecificationsController';
+import { ensureAdmin } from '../middlewares/ensureAdmin';
+import { ensureAuthenticated } from '../middlewares/ensureAuthenticated';
 
-const specificationsRoutes = Router()
-const specificationsController = new CreateSpecificationsController()
+const specificationsRoutes = Router();
+const createSpecificationsController = new CreateSpecificationsController();
 
-specificationsRoutes.post('/', ensureAuthenticated, ensureAdmin, specificationsController.handle)
+specificationsRoutes.post(
+	'/',
+	ensureAuthenticated,
+	ensureAdmin,
+	createSpecificationsController.handle
+);
 
-export {specificationsRoutes}
+const updateCarSpecificationsController =
+	new UpdateCarSpecificationsController();
+specificationsRoutes.post(
+	'/:id',
+	ensureAuthenticated,
+	ensureAdmin,
+	updateCarSpecificationsController.handle
+);
+
+export { specificationsRoutes };
