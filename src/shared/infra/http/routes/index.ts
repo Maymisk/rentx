@@ -13,7 +13,7 @@ router.use('/categories', categoriesRoutes);
 router.use('/specifications', specificationsRoutes);
 router.use('/users', usersRoutes);
 router.use('/cars', carsRoutes);
-router.use('/rentals', rentsRoutes);
+router.use('/rents', rentsRoutes);
 router.use('/password', passwordRoutes);
 router.use(authenticationRoutes);
 
