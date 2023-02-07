@@ -6,10 +6,22 @@ import { CreateCategoryController } from '../../../../modules/cars/useCases/crea
 import { ImportCategoryController } from '../../../../modules/cars/useCases/importCategory/ImportCategoryController';
 import { ListCategoryController } from '../../../../modules/cars/useCases/listCategories/ListCategoriesController';
 import { ensureAdmin } from '../middlewares/ensureAdmin';
+import { extname } from 'path';
 
 const categoriesRoutes = Router();
 
-const upload = multer({ dest: './tmp' });
+const upload = multer({
+	dest: './tmp',
+	fileFilter(req, file, callback) {
+		const extension = extname(file.originalname);
+
+		if (extension === '.csv') {
+			callback(null, true);
+		} else {
+			callback(null, false);
+		}
+	},
+});
 
 // Create category
 const createCategoryController = new CreateCategoryController();
