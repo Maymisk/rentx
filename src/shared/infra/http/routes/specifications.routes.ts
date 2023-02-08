@@ -16,7 +16,7 @@ specificationsRoutes.post(
 
 const updateCarSpecificationsController =
 	new UpdateCarSpecificationsController();
-specificationsRoutes.post(
+specificationsRoutes.put(
 	'/:id',
 	ensureAuthenticated,
 	ensureAdmin,
