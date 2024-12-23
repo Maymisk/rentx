@@ -21,7 +21,7 @@ This is a car rent service REST API.
 ## 🏃‍♂️ My journey
 
 <p align="center">
-    <strong>This API was my main project for the first trimester of 2022 - I neglected git back then 😭</strong>
+    <strong>This API was my main project for the first trimester of 2022</strong>
 </p>
 
 This project taught me most of what I know back-end wise. It's very thorough - built according to the SOLID principles, these are some of its features:
