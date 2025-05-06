@@ -3,52 +3,47 @@
 </p>
 
 
-# 🚗 Rentx
+# 🚗 Rentx API
 
-This is a car rent service REST API.
+Rentx is a comprehensive backend solution for a car rental service. It encompasses user authentication, vehicle management, rental processing, and administrative functionalities. Developed with a focus on maintainability and scalability, Rentx adheres to SOLID principles and clean architecture patterns.
 
-<p align="center">
-    <a href="#-technologies">Technologies</a>&nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="#-running-locally">Running locally</a>&nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="#-api-docs">Docs</a>&nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="#-entity-relationship-diagram">ERD</a>&nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="#-improvements">Improvements</a>&nbsp;&nbsp;&nbsp;&nbsp;
-</p>
+## ⚙️ Tech Stack
 
+- **Runtime:** Node.js
+- **Language:** TypeScript
+- **Framework:** Express.js
+- **Database:** PostgreSQL
+- **ORM:** Prisma & TypeORM
+- **Authentication:** JWT, Refresh Tokens
+- **Containerization:** Docker, Docker Compose
+- **Testing:** Jest (Unit & Integration)
+- **File Storage:** AWS S3
+- **Email Provider:** AWS SES
+- **Documentation:** Swagger
 
+## 🧩 Architectural Patterns
 
+- **SOLID Principles:** Ensuring single responsibility, open/closed, Liskov substitution, interface segregation, and dependency inversion throughout the codebase.
+- **Clean Architecture:** Separation of concerns with distinct layers for controllers, use cases, repositories, and services.
+- **Dependency Injection:** Custom DI using tsyringe container to manage and inject dependencies, enhancing testability and modularity.
 
-## 🏃‍♂️ My journey
+## 📦 Features
 
-<p align="center">
-    <strong>This API was my main project for the first trimester of 2022</strong>
-</p>
+### ✅ User Management
+- Registration and authentication with JWT and refresh tokens
+- Secure password reset functionality via email
 
-This project taught me most of what I know back-end wise. It's very thorough - built according to the SOLID principles, these are some of its features:
+### 🚘 Car Management
+- CRUD operations for car entities
+- Image upload support for car listings
+- CSV import for bulk car data
 
-- CRUD
-- Image upload
-- CSV upload
-- JWT Authentication
-- Refresh Token 
-- Password reset with email 🔑
-- Unit tests ✅
-- Integration tests ✅
-- Documentation with Swagger (not complete!) 📃
+### 📅 Rental Processing
+- Initiate and manage car rentals
+- Track rental durations and statuses
 
-**Rentx was also my first experience with cloud services** - more specifically, AWS. This project made use of S3 (to store images) and SES (to send the password emails). At the same time, I implemented temporary file system storage and a fake SMTP service ([**Ethereal!**](https://ethereal.email))
-
-Enjoy!
-## ✨ Technologies
-
-- Node JS
-- Typescript
-- Express
-- Typeorm
-- Prisma 💠
-- Docker 🐋
-- PostgreSQL 🐘
-- Bcrypt 🔒
+### 🧪 Testing
+- Unit and integration testing with Jest
 
 ## 💻 Running locally
 
@@ -133,8 +128,6 @@ yarn prisma:migrate-test
 Now you're ready to run integration tests 👏
 
 ## 📃 API Docs
-
-***READ THIS!!!!!***
 
 **```The base URL is http://localhost:3333```**
 
@@ -469,11 +462,3 @@ GET /user
 <p align="center">
     <img src="/prisma/ERD.svg" />
 </p>
-
-# 🔧 Improvements
-
-- Implement data validation on the controllers
-- Implement file validation
-- Implement queues for the email use case
-- Create more integration tests
-- Abstract entities from the ORMs
